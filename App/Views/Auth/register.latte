@@ -1,0 +1,45 @@
+{layout 'layout.latte'}
+{block title}Register{/block}
+{block content}
+<div class="card">
+    <div class="card-header">
+        Register
+    </div>
+    <div class="card-body">
+        <form action="{url('/daftar')}" id="register" method="POST">
+            <div class="mb-1">
+                <label>Username</label>
+                <input type="text" name="username" class="form-control {checkError(username) ? is-invalid : ''}" value="{old(username)}">
+                {if checkError(username)}
+                <div class="invalid-feedback">{validateMsg(username)}</div>
+                {/if}
+            </div>
+            <div class="mb-1">
+                <label>Nama</label>
+                <input type="text" name="nama" class="form-control {checkError(nama) ? is-invalid : ''}" value="{old(nama)}">
+                {if checkError(nama)}
+                <div class="invalid-feedback">{validateMsg(nama)}</div>
+                {/if}
+            </div>
+            <div class="mb-1">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control {checkError(password) ? is-invalid : ''}">
+                {if checkError(password)}
+                <div class="invalid-feedback">{validateMsg(password)}</div>
+                {/if}
+            </div>
+            <div class="mb-1">
+                <label>Konfirmasi Password</label>
+                <input type="password" name="conpass" class="form-control {checkError(conpass) ? is-invalid : ''}">
+                {if checkError(conpass)}
+                <div class="invalid-feedback">{validateMsg(conpass)}</div>
+                {/if}
+            </div>
+        </form>
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-sm btn-primary" type="submit" form="register">Register</button>
+        <p>Sudah punya akun? <br> <a href="{url('/')}">Login sekarang!</a></p>
+    </div>
+</div>
+{/block}

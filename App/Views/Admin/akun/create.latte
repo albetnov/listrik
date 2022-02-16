@@ -1,0 +1,52 @@
+{layout '../layout.latte'}
+{block title}Create Account{/block}
+{block content}
+<div class="container">
+    <div class="card shadow mt-3">
+        <div class="card-header">Create Account Form</div>
+        <div class="card-body">
+            <form action="{url('/admin/akun/aksi_buat')}" method="POST" id="create">
+                <div class="form-floating mb-3">
+                    <input type="text" name="username" class="form-control {checkError(username) ? is-invalid : ''}" value="{old(username)}" id="username" placeholder="Username">
+                    <label for="username">Username</label>
+                    {if checkError(username)}
+                    <div class="invalid-feedback">{validateMsg(username)}</div>
+                    {/if}
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" name="nama" class="form-control {checkError(nama) ? is-invalid : ''}" value="{old(nama)}" id="nama" placeholder="Name">
+                    <label for="nama">Name</label>
+                    {if checkError(nama)}
+                    <div class="invalid-feedback">{validateMsg(nama)}</div>
+                    {/if}
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" name="password" class="form-control {checkError(password) ? is-invalid : ''}" id="password" placeholder="Password">
+                    <label for="password">Password</label>
+                    {if checkError(password)}
+                    <div class="invalid-feedback">{validateMsg(password)}</div>
+                    {/if}
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" name="conpass" class="form-control {checkError(conpass) ? is-invalid : ''}" id="conpass" placeholder="Confirm Password">
+                    <label for="conpass">Confirm Password</label>
+                    {if checkError(conpass)}
+                    <div class="invalid-feedback">{validateMsg(conpass)}</div>
+                    {/if}
+                </div>
+                <div class="mb-1">
+                    <label for="level">Level: </label>
+                    <select name="level" id="level" n:inner-foreach="$levels as $level" class="form-select {checkError(level) ? is-invalid : ''}">
+                        <option value="{$level->id_level}">{$level->nama_level}</option>
+                    </select>
+                    <div class="invalid-feedback" n:if="checkError(level)">{validateMsg(level)}</div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-sm btn-primary" type="submit" form="create">Kirim</button>
+            <button class="btn btn-sm btn-secondary">Kembali</button>
+        </div>
+    </div>
+</div>
+{/block}

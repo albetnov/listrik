@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * A Simple PHP MVC
+ * Created by: Albet Novendo
+ * File: ASMVC CLI
+ * ASMVC is protected by MIT.
+ * Contribution: https://github.com/albetnov/simple-php-mvc
+ */
+
+use Albet\Asmvc\Core\Cli;
+
+/**
+ * Define that ASMVC Cli is started.
+ */
+define('ASMVC_CLI_START', true);
+
+/**
+ * Calling autoload. If it's not exist. Install composer's autoload.
+ */
+if (is_dir(__DIR__ . '/vendor/')) {
+    require_once __DIR__ . '/App/Core/init.php';
+    $install = false;
+} else {
+    echo "ASMVC will try to install dependencies by running composer install...\n";
+    $install = true;
+}
+require_once __DIR__ . '/App/Core/Helpers.php';
+require_once __DIR__ . '/App/Core/Cli/BaseCli.php';
+require_once __DIR__ . '/App/Core/Cli.php';
+
+/**
+ * Validate that ASMVC must be running by CLI interface only.
+ */
+if (PHP_SAPI !== 'cli') {
+    exit('ASMVC Only limited to run in CLI Environment Only' . PHP_EOL);
+}
+
+/**
+ * Parsing the argument written by user.
+ */
+$cli = new Cli;
+if ($install) {
+    $cli->install();
+} else {
+    $cli->argument_parse($argv);
+}

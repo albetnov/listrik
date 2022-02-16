@@ -1,0 +1,36 @@
+{layout '../layout.latte'}
+{block title}Manage Account{/block}
+{block content}
+<div class="container">
+    <div class="card shadow mt-3">
+        <div class="card-header">
+            Accounts List <br>
+            <button class="btn btn-primary" onclick="location.href={url('/admin/akun/buat')}">Create Account</button>
+            <div class="alert alert-primary mt-1" n:if="flash()::checkFlash('pesan')">{flash()::catchFlash('pesan')}</div>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Username</th>
+                        <th>Level</th>
+                        <th colspan="2" class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody n:inner-foreach="$accounts as $account">
+                    <tr>
+                        <td>{!isset($i) ? $i = 1 : $i++}</td>
+                        <td>{$account->nama_admin}</td>
+                        <td>{$account->username}</td>
+                        <td>{$account->level->nama_level == 'admin' ? '<span class="badge rounded-pill bg-success">Admin</span>' : '<span class="badge rounded-pill bg-primary">Bank</span>'|noescape}</td>
+                        <td class="text-center"><button class="btn btn-sm btn-outline-primary">Edit</button></td>
+                        <td class="text-center"><button class="btn btn-sm btn-outline-danger">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{/block}

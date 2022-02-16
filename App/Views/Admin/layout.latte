@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{asset(BS5_CSS)}">
+    <title>{block title}{/block}</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand navbar-dark bg-dark shadow">
+        <div class="container">
+            <a class="navbar-brand text-danger" href="#"><strong>Listrik</strong></a>
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {match('/admin/dashboard', 'active')}" href="{url('/admin/dashboard')}">Home <span class="visually-hidden">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {match('/admin/akun', 'active')}" href="{url('/admin/akun')}">Manage Account</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownId">
+                            <a class="dropdown-item" href="#">{\Albet\Asmvc\Models\Admin::user()->nama_admin}</a>
+                            <form action="{url('/logout')}" method="POST">
+                                <button type="submit" class="dropdown-item">Logout</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {block content}{/block}
+</body>
+<script src="{asset(BS5_JS)}"></script>
+
+</html>
