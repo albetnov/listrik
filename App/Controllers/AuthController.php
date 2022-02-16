@@ -3,6 +3,7 @@
 namespace Albet\Asmvc\Controllers;
 
 use Albet\Asmvc\Core\Flash;
+use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\SessionManager;
 use Albet\Asmvc\Core\Validator;
 use Albet\Asmvc\Models\Admin;
@@ -42,6 +43,42 @@ class AuthController
             Flash::flash('error', 'Kresidensial tidak cocok');
             return redirect('/');
         }
+    }
+
+    public function vDaftar()
+    {
+        return view('Auth.register');
+    }
+
+    public function daftar(Requests $requests)
+    {
+        $validate = Validator::make([
+            'nama' => 'required',
+            'username' => 'required',
+            'password' => 'required|min:8',
+            'conpass' => 'required|same:password',
+        ], [
+            'nama:required' => 'Gak punya nama kah?',
+            'username:required' => 'Nama panggilan? masa ga ada juga?',
+            'password:required' => 'Kasih lah password. Mau buat akun atau apa?',
+            'password:min' => 'Nih password pendek amat. Tar di hack nangis.',
+            'conpass:required' => 'Isi juga ini oi',
+            'conpass:same' => 'Samain dong bambang sama password lu',
+        ]);
+
+        if (!$validate) {
+            return redirect('/register', false);
+        }
+
+        Admin::create([
+            'nama_admin' => $requests->input('nama'),
+            'username' => $requests->input('username'),
+            'password' => mkPass(PASSWORD_BCRYPT, $requests->input('password')),
+            'id_level' => 3
+        ]);
+
+        Flash::flash('pesan', 'Account created sucessfully!');
+        return redirect('/', false);
     }
 
     public static function redirect()

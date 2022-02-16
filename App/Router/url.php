@@ -24,6 +24,8 @@ use Albet\Asmvc\Middleware\Guest;
 //Your route
 Route::add('/', [AuthController::class, 'login'], Guest::class);
 Route::add('/login', [AuthController::class, 'auth'], 'POST', Guest::class);
+Route::add('/register', [AuthController::class, 'vDaftar'], Guest::class);
+Route::add('/daftar', [AuthController::class, 'daftar'], 'POST', Guest::class);
 Route::add('/admin/dashboard', [AdminController::class, 'index'], Admin::class);
 Route::add('/admin/akun', [AdminController::class, 'akun'], Admin::class);
 Route::add('/admin/akun/buat', [AdminController::class, 'vBuatAkun'], Admin::class);

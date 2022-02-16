@@ -1,36 +1,37 @@
 {layout 'layout.latte'}
 {block title}Register{/block}
 {block content}
-<div class="card">
+<div class="card shadow">
     <div class="card-header">
         Register
     </div>
     <div class="card-body">
         <form action="{url('/daftar')}" id="register" method="POST">
-            <div class="mb-1">
+            {csrf('/daftar')}
+            <div class="form-floating mb-3 shadow">
+                <input type="text" name="username" placeholder="Username" class="form-control border border-0 {checkError(username) ? is-invalid : ''}" value="{old(username)}">
                 <label>Username</label>
-                <input type="text" name="username" class="form-control {checkError(username) ? is-invalid : ''}" value="{old(username)}">
                 {if checkError(username)}
                 <div class="invalid-feedback">{validateMsg(username)}</div>
                 {/if}
             </div>
-            <div class="mb-1">
+            <div class="form-floating mb-3 shadow">
+                <input type="text" name="nama" placeholder="Nama" class="form-control border border-0 {checkError(nama) ? is-invalid : ''}" value="{old(nama)}">
                 <label>Nama</label>
-                <input type="text" name="nama" class="form-control {checkError(nama) ? is-invalid : ''}" value="{old(nama)}">
                 {if checkError(nama)}
                 <div class="invalid-feedback">{validateMsg(nama)}</div>
                 {/if}
             </div>
-            <div class="mb-1">
+            <div class="form-floating mb-3 shadow">
+                <input type="password" name="password" placeholder="Password" class="form-control border border-0 {checkError(password) ? is-invalid : ''}">
                 <label>Password</label>
-                <input type="password" name="password" class="form-control {checkError(password) ? is-invalid : ''}">
                 {if checkError(password)}
                 <div class="invalid-feedback">{validateMsg(password)}</div>
                 {/if}
             </div>
-            <div class="mb-1">
-                <label>Konfirmasi Password</label>
-                <input type="password" name="conpass" class="form-control {checkError(conpass) ? is-invalid : ''}">
+            <div class="form-floating mb-3 shadow">
+                <input type="password" name="conpass" placeholder="Confirm Password" class="form-control border border-0 {checkError(conpass) ? is-invalid : ''}">
+                <label>Confirm Password</label>
                 {if checkError(conpass)}
                 <div class="invalid-feedback">{validateMsg(conpass)}</div>
                 {/if}
@@ -38,8 +39,8 @@
         </form>
     </div>
     <div class="card-footer">
-        <button class="btn btn-sm btn-primary" type="submit" form="register">Register</button>
-        <p>Sudah punya akun? <br> <a href="{url('/')}">Login sekarang!</a></p>
+        <button class="btn btn-light shadow" type="submit" form="register">Register</button>
+        <p class="mt-3">Already registered? <br> <a href="{url('/')}">Login now!</a></p>
     </div>
 </div>
 {/block}

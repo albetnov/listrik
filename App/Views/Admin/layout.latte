@@ -10,9 +10,9 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand navbar-dark bg-dark shadow">
+    <nav class="navbar navbar-expand navbar-light bg-light shadow">
         <div class="container">
-            <a class="navbar-brand text-danger" href="#"><strong>Listrik</strong></a>
+            <a class="navbar-brand text-info" href="#"><strong>Listrik</strong></a>
             <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -26,7 +26,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <div class="dropdown-menu shadow" aria-labelledby="dropdownId">
                             <a class="dropdown-item" href="#">{\Albet\Asmvc\Models\Admin::user()->nama_admin}</a>
                             <form action="{url('/logout')}" method="POST">
                                 {csrf('/logout')}
