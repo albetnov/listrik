@@ -28,4 +28,7 @@ Route::add('/admin/dashboard', [AdminController::class, 'index'], Admin::class);
 Route::add('/admin/akun', [AdminController::class, 'akun'], Admin::class);
 Route::add('/admin/akun/buat', [AdminController::class, 'vBuatAkun'], Admin::class);
 Route::add('/admin/akun/aksi_buat', [AdminController::class, 'buatAkun'], 'POST', Admin::class);
+Route::add("/admin/akun/edit/" . Route::PARAMETER, [AdminController::class, 'vEditAkun'], Admin::class);
+Route::add('/admin/akun/aksi_edit/' . Route::PARAMETER, [AdminController::class, 'editAkun'], 'POST', Admin::class);
+Route::add('/admin/akun/delete/' . Route::PARAMETER, [AdminController::class, 'delAkun'], 'POST', Admin::class);
 Route::add('/logout', [AuthController::class, 'logout'], 'POST');

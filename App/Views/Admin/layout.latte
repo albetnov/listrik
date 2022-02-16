@@ -29,6 +29,7 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownId">
                             <a class="dropdown-item" href="#">{\Albet\Asmvc\Models\Admin::user()->nama_admin}</a>
                             <form action="{url('/logout')}" method="POST">
+                                {csrf('/logout')}
                                 <button type="submit" class="dropdown-item">Logout</button>
                             </form>
                         </div>

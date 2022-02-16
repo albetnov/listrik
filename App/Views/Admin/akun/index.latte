@@ -21,12 +21,17 @@
                 </thead>
                 <tbody n:inner-foreach="$accounts as $account">
                     <tr>
-                        <td>{!isset($i) ? $i = 1 : $i++}</td>
+                        <td>{!isset($i) ? $i = 1 : ++$i}</td>
                         <td>{$account->nama_admin}</td>
                         <td>{$account->username}</td>
                         <td>{$account->level->nama_level == 'admin' ? '<span class="badge rounded-pill bg-success">Admin</span>' : '<span class="badge rounded-pill bg-primary">Bank</span>'|noescape}</td>
-                        <td class="text-center"><button class="btn btn-sm btn-outline-primary">Edit</button></td>
-                        <td class="text-center"><button class="btn btn-sm btn-outline-danger">Delete</button></td>
+                        <td class="text-center"><button class="btn btn-sm btn-outline-primary" onclick="location.href={url('/admin/akun/edit/'.$account->id_admin)}">Edit</button></td>
+                        <td class="text-center">
+                            <form action="{url('/admin/akun/delete/'.$account->id_admin)}" method="POST">
+                                {csrf('/admin/akun/delete/'.$account->id_admin)}
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 </tbody>
             </table>

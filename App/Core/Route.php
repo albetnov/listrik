@@ -21,7 +21,7 @@ class Route
      * Add routing to the array
      * @param string $path
      * @param array $controllerandmethod
-     * @param array $http_method_or_middlewarepublic
+     * @param array $http_method_or_middleware
      */
     public static function add($path, $controllerandmethod, ...$http_method_or_middleware)
     {

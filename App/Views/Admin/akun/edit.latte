@@ -1,26 +1,27 @@
 {layout '../layout.latte'}
-{block title}Create Account{/block}
+{block title}Edit Account{/block}
 {block content}
 <div class="container">
     <div class="card shadow mt-3">
-        <div class="card-header">Create Account Form</div>
+        <div class="card-header">Edit Account Form</div>
         <div class="card-body">
-            <form action="{url('/admin/akun/aksi_buat')}" method="POST" id="create">
-                {csrf('/admin/akun/aksi_buat')}
+            <form action="{url('/admin/akun/aksi_edit/'.$akun->id_admin)}" method="POST" id="edit">
+                {csrf('/admin/akun/aksi_edit'.$akun->id_admin)}
                 <div class="form-floating mb-3">
-                    <input type="text" name="username" class="form-control {checkError(username) ? is-invalid : ''}" value="{old(username)}" id="username" placeholder="Username">
+                    <input type="text" name="username" class="form-control {checkError(username) ? is-invalid : ''}" value="{old(username, $akun->username)}" id="username" placeholder="Username">
                     <label for="username">Username</label>
                     {if checkError(username)}
                     <div class="invalid-feedback">{validateMsg(username)}</div>
                     {/if}
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" name="nama" class="form-control {checkError(nama) ? is-invalid : ''}" value="{old(nama)}" id="nama" placeholder="Name">
+                    <input type="text" name="nama" class="form-control {checkError(nama) ? is-invalid : ''}" value="{old(nama, $akun->nama_admin)}" id="nama" placeholder="Name">
                     <label for="nama">Name</label>
                     {if checkError(nama)}
                     <div class="invalid-feedback">{validateMsg(nama)}</div>
                     {/if}
                 </div>
+                <span class="badge rounded-pill bg-warning mb-2">Note: Leave empty if you won't change the password.</span>
                 <div class="form-floating mb-3">
                     <input type="password" name="password" class="form-control {checkError(password) ? is-invalid : ''}" id="password" placeholder="Password">
                     <label for="password">Password</label>
@@ -37,7 +38,7 @@
                 </div>
                 <div class="mb-1">
                     <label for="level">Level: </label>
-                    {var $oldlevel = old(level)}
+                    {var $oldlevel = old(level, $akun->level->id_level)}
                     <select name="level" id="level" n:inner-foreach="$levels as $level" class="form-select {checkError(level) ? is-invalid : ''}">
                         <option value="{$level->id_level}" {$oldlevel==$level->id_level ? selected : ''}>{$level->nama_level}</option>
                     </select>
@@ -46,7 +47,7 @@
             </form>
         </div>
         <div class="card-footer">
-            <button class="btn btn-sm btn-primary" type="submit" form="create">Kirim</button>
+            <button class="btn btn-sm btn-primary" type="submit" form="edit">Kirim</button>
             <button class="btn btn-sm btn-secondary" onclick="location.href={url('/admin/akun')}">Kembali</button>
         </div>
     </div>

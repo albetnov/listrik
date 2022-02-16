@@ -1,5 +1,5 @@
 vendor/
-composer.lock
+node_modules/
 .env
 .phpunit.result.cache
 .env.testing
