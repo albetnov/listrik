@@ -50,8 +50,9 @@ class AuthController
         return view('Auth.register');
     }
 
-    public function daftar(Requests $requests)
+    public function daftar()
     {
+        $requests = new Requests;
         $validate = Validator::make([
             'nama' => 'required',
             'username' => 'required',

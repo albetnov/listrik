@@ -7,7 +7,6 @@ use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\Validator;
 use Albet\Asmvc\Models\Admin;
 use Albet\Asmvc\Models\Level;
-use Illuminate\Support\Facades\Request;
 
 class AdminController
 {
@@ -33,8 +32,9 @@ class AdminController
         ]);
     }
 
-    public function buatAkun(Requests $requests)
+    public function buatAkun()
     {
+        $requests = new Requests;
         $validate = Validator::make([
             'nama' => 'required',
             'username' => 'required',
@@ -69,6 +69,9 @@ class AdminController
 
     public function vEditAkun(Requests $requests, $id)
     {
+        vdd(array_values($id));
+        $array = ['1'];
+        vdd($id, $array);
         $fetch = Admin::with('level')->where('id_admin', $id)->first();
 
         if (!$fetch) {
@@ -81,8 +84,9 @@ class AdminController
         ]);
     }
 
-    public function editAkun(Requests $requests, $id)
+    public function editAkun($id)
     {
+        $requests = new Requests;
         $fetch = Admin::with('level')->where('id_admin', $id)->first();
 
         if (!$fetch) {
@@ -126,7 +130,7 @@ class AdminController
         $validate = Validator::make($rules, $message);
 
         if (!$validate) {
-            return redirect('/admin/akun/buat', false);
+            return redirect('/admin/akun/edit/' . $fetch->id_admin, false);
         }
 
         $fetch->update($data);
@@ -136,7 +140,7 @@ class AdminController
         return redirect('/admin/akun', false);
     }
 
-    public function delAkun(Requests $requests, $id)
+    public function delAkun($id)
     {
         $fetch = Admin::with('level')->where('id_admin', $id)->first();
 

@@ -6,7 +6,7 @@
         <div class="card-header">Edit Account Form</div>
         <div class="card-body">
             <form action="{url('/admin/akun/aksi_edit/'.$akun->id_admin)}" method="POST" id="edit">
-                {csrf('/admin/akun/aksi_edit'.$akun->id_admin)}
+                {csrf('/admin/akun/aksi_edit/'.$akun->id_admin)}
                 <div class="form-floating mb-3">
                     <input type="text" name="username" class="form-control {checkError(username) ? is-invalid : ''}" value="{old(username, $akun->username)}" id="username" placeholder="Username">
                     <label for="username">Username</label>
