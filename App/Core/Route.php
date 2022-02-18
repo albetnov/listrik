@@ -180,7 +180,7 @@ class Route
                     $pattern = "#^{$route['path']}$#";
                     $method = $route['method'];
                     $resolver = new DependencyResolver;
-                    return $resolver->methodResolver($route['controller'], $method, $variables);
+                    return $resolver->methodResolver($route['controller'], $method, ...$variables);
                 }
                 exit;
             } else if ($server != $route['path']) {

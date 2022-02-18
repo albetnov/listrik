@@ -32,9 +32,8 @@ class AdminController
         ]);
     }
 
-    public function buatAkun()
+    public function buatAkun(Requests $requests)
     {
-        $requests = new Requests;
         $validate = Validator::make([
             'nama' => 'required',
             'username' => 'required',
@@ -67,11 +66,8 @@ class AdminController
         return redirect('/admin/akun', false);
     }
 
-    public function vEditAkun(Requests $requests, $id)
+    public function vEditAkun($id)
     {
-        vdd(array_values($id));
-        $array = ['1'];
-        vdd($id, $array);
         $fetch = Admin::with('level')->where('id_admin', $id)->first();
 
         if (!$fetch) {
@@ -84,9 +80,8 @@ class AdminController
         ]);
     }
 
-    public function editAkun($id)
+    public function editAkun(Requests $requests, $id)
     {
-        $requests = new Requests;
         $fetch = Admin::with('level')->where('id_admin', $id)->first();
 
         if (!$fetch) {

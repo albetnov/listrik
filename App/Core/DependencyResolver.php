@@ -39,7 +39,7 @@ class DependencyResolver
      * @return mixed
      * @throws Exception
      */
-    public function methodResolver($class, $method, ...$definedParam)
+    public function methodResolver($class, $method, $definedParam = [])
     {
         $class = $this->resolve($class);
 
@@ -51,7 +51,6 @@ class DependencyResolver
         $parameter = $reflector->getParameters();
         $dependencies = $this->getDependencies($parameter);
         if ($definedParam !== []) {
-            vdd($definedParam);
             $dependencies[] = $definedParam;
             $class->$method(...$dependencies);
             // $class->$method($definedParam, ...$dependencies);
@@ -70,16 +69,15 @@ class DependencyResolver
     public function getDependencies($parameters)
     {
         $dependencies = array();
-
         foreach ($parameters as $parameter) {
-            $dependency = $parameter->getClass();
+            $dependency = $parameter->getType();
             if (is_null($dependency)) {
                 // $dependencies[] = $this->resolveNonClass($parameter);
             } else {
-                $dependencies[] = $this->resolve($dependency->name);
+                $dependencies[] = $this->resolve($dependency->getName());
             }
         }
-
+        // vdd($debugger);
         return $dependencies;
     }
 
@@ -87,14 +85,13 @@ class DependencyResolver
      * Return default value if exist.
      * @param ReflectionParameter $parameter
      * @return mixed
-     * @throws Exception
      */
     public function resolveNonClass(\ReflectionParameter $parameter)
     {
         if ($parameter->isDefaultValueAvailable()) {
             return $parameter->getDefaultValue();
+        } else {
+            return $parameter->getName();
         }
-
-        throw new \Exception("Error: What do you want to resolve?");
     }
 }
