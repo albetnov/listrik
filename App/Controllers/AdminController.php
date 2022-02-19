@@ -9,6 +9,7 @@ use Albet\Asmvc\Models\Admin;
 use Albet\Asmvc\Models\Level;
 use Albet\Asmvc\Models\Pelanggan;
 use Albet\Asmvc\Models\Pengunaan;
+use Albet\Asmvc\Models\Tagihan;
 use Albet\Asmvc\Models\Tarif;
 
 class AdminController
@@ -442,5 +443,126 @@ class AdminController
 
         Flash::flash('pesan', 'Usage deleted.');
         return redirect('/admin/pengunaan', false);
+    }
+
+    public function tagihan()
+    {
+        $bills = Tagihan::with('pelanggan', 'penggunaan')->get();
+
+        return view('Admin.tagihan.index', compact('bills'));
+    }
+
+    public function seeTagihan($id)
+    {
+        $bill = Tagihan::with('pelanggan', 'penggunaan')->where('id_tagihan', $id)->first();
+        if (!$bill) return ReturnError(404);
+
+        return view('Admin.tagihan.detail', compact('bill'));
+    }
+
+    public function vAddTagihan()
+    {
+        return view('Admin.tagihan.create', [
+            'usages' => Pengunaan::with('pelanggan')->get()
+        ]);
+    }
+
+    public function addTagihan(Requests $requests)
+    {
+        $rules = [
+            'usage' => 'required',
+            'bulan' => 'required',
+            'status' => 'required|max:20'
+        ];
+
+        if ($requests->input('jumlah_meter')) {
+            $rules['jumlah_meter'] = 'numeric';
+            $jumlahMeter = $requests->input('jumlah_meter');
+        }
+
+        $validate = Validator::make($rules);
+
+        if (!$validate) {
+            return redirect('/admin/tagihan/buat', false);
+        }
+
+        $usage = Pengunaan::where('id_penggunaan', $requests->input('usage'))->first();
+
+        $idPelanggan = $usage->id_pelanggan;
+
+        $split = explode('-', $requests->input('bulan'));
+
+        if (!isset($jumlahMeter)) {
+            $jumlahMeter = $usage->meter_awal + $usage->meter_akhir;
+        }
+
+        Tagihan::create([
+            'id_penggunaan' => $requests->input('usage'),
+            'id_pelanggan' => $idPelanggan,
+            'tahun' => $split[0],
+            'bulan' => $split[1],
+            'jumlah_meter' => $jumlahMeter,
+            'status' => $requests->input('status')
+        ]);
+
+        Flash::flash('pesan', 'Bill added.');
+        return redirect('/admin/tagihan', false);
+    }
+
+    public function vEditTagihan($id)
+    {
+        $bill = Tagihan::with('pelanggan', 'penggunaan')->where('id_tagihan', $id)->first();
+        if (!$bill) return ReturnError(404);
+
+        $usages = Pengunaan::get();
+        $date = implode('-', [$bill->tahun, $bill->bulan]);
+
+        return view('Admin.tagihan.edit', compact('bill', 'usages', 'date'));
+    }
+
+    public function editTagihan(Requests $requests, $id)
+    {
+        $bill = Tagihan::with('pelanggan', 'penggunaan')->where('id_tagihan', $id)->first();
+        if (!$bill) return ReturnError(404);
+
+        $validate = Validator::make([
+            'usage' => 'required',
+            'bulan' => 'required',
+            'status' => 'required|max:20',
+            'jumlah_meter' => 'required|numeric'
+        ]);
+
+        if (!$validate) {
+            return redirect('/admin/tagihan/edit/' . $id, false);
+        }
+
+        $usage = Pengunaan::where('id_penggunaan', $requests->input('usage'))->first();
+
+        $idPelanggan = $usage->id_pelanggan;
+
+        $split = explode('-', $requests->input('bulan'));
+
+        $bill->update([
+            'id_penggunaan' => $requests->input('usage'),
+            'id_pelanggan' => $idPelanggan,
+            'tahun' => $split[0],
+            'bulan' => $split[1],
+            'jumlah_meter' => $requests->input('jumlah_meter'),
+            'status' => $requests->input('status')
+        ]);
+
+        Flash::flash('pesan', 'Bill edited.');
+        return redirect('/admin/tagihan', false);
+    }
+
+    public function delTagihan($id)
+    {
+        $bill = Tagihan::with('pelanggan', 'penggunaan')->where('id_tagihan', $id)->first();
+        if (!$bill) return ReturnError(404);
+
+        $bill->delete();
+
+        Flash::flash('pesan', 'Bill deleted');
+        return redirect('/admin/tagihan', false);
     }
 }

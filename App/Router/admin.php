@@ -29,3 +29,10 @@ Route::add('/admin/pengunaan/aksi_buat', [AdminController::class, 'addPengunaan'
 Route::add('/admin/pengunaan/edit/' . Route::PARAMETER, [AdminController::class, 'vEditPengunaan'], Admin::class);
 Route::add('/admin/pengunaan/aksi_edit/' . Route::PARAMETER, [AdminController::class, 'editPengunaan'], 'POST', Admin::class);
 Route::add('/admin/pengunaan/delete/' . Route::PARAMETER, [AdminController::class, 'delPengunaan'], 'POST', Admin::class);
+Route::add('/admin/tagihan', [AdminController::class, 'tagihan'], Admin::class);
+Route::add('/admin/tagihan/see/' . Route::PARAMETER, [AdminController::class, 'seeTagihan'], Admin::class);
+Route::add('/admin/tagihan/buat', [AdminController::class, 'vAddTagihan'], Admin::class);
+Route::add('/admin/tagihan/aksi_buat', [AdminController::class, 'addTagihan'], 'POST', Admin::class);
+Route::add('/admin/tagihan/edit/' . Route::PARAMETER, [AdminController::class, 'vEditTagihan'], Admin::class);
+Route::add('/admin/tagihan/aksi_edit/' . Route::PARAMETER, [AdminController::class, 'editTagihan'], 'POST', Admin::class);
+Route::add('/admin/tagihan/delete/' . Route::PARAMETER, [AdminController::class, 'delTagihan'], 'POST', Admin::class);

@@ -1,0 +1,50 @@
+{layout '../layout.latte'}
+{block title}Detail Bills{/block}
+{block content}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col m-3">
+            <div class="card shadow">
+                <div class="card-header">
+                    Detail {$bill->pelanggan->nama_pelanggan}
+                </div>
+                <div class="card-body">
+                    <p>Bulan: {$bill->bulan}</p>
+                    <p>Tahun: {$bill->tahun}</p>
+                    <p>Jumlah Meter: {$bill->jumlah_meter}</p>
+                    <p>Status: <span class="badge rounded-pill bg-info">{$bill->status}</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col m-3">
+            <div class="card shadow">
+                <div class="card-header">
+                    Detail Penggunaan
+                </div>
+                <div class="card-body">
+                    <p>Bulan: {$bill->penggunaan->bulan}</p>
+                    <p>Tahun: {$bill->penggunaan->tahun}</p>
+                    <p>Meteran Awal: {$bill->penggunaan->meter_awal}</p>
+                    <p>Meteran Akhir: {$bill->penggunaan->meter_akhir}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col m-3">
+            <div class="card shadow">
+                <div class="card-header">
+                    Detail Pelanggan
+                </div>
+                <div class="card-body">
+                    <p>No Kwh: {$bill->pelanggan->no_kwh}</p>
+                    <p>Alamat: {$bill->pelanggan->alamat}</p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-primary shadow" onclick="location.href={url('/admin/tagihan')}">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

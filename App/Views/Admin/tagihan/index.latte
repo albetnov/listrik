@@ -1,0 +1,49 @@
+{layout '../layout.latte'}
+{block title}Manage Bills{/block}
+{block content}
+<div class="container">
+    <div class="card shadow mt-3">
+        <div class="card-header">
+            Bills List
+            <br>
+            <button class="btn btn-primary mt-1 shadow" onclick="location.href={url('/admin/tagihan/buat')}">Create Data</button>
+            <div class="alert alert-primary mt-1 shadow" n:if="flash()->checkFlash('pesan')">{flash()->catchFlash('pesan')}</div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Pelanggan</th>
+                            <th>Bulan</th>
+                            <th>Tahun</th>
+                            <th>Jumlah Meter</th>
+                            <th>Status</th>
+                            <th colspan="3" class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody n:inner-foreach="$bills as $bill">
+                        <tr>
+                            <td>{!isset($i) ? $i = 1 : ++$i}</td>
+                            <td>{$bill->pelanggan->nama_pelanggan}</td>
+                            <td>{$bill->bulan}</td>
+                            <td>{$bill->tahun}</td>
+                            <td>{$bill->jumlah_meter}</td>
+                            <td>{$bill->status}</td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-info shadow" onclick="location.href={url('/admin/tagihan/see/'.$bill->id_tagihan)}">Detail</button></td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-primary shadow" onclick="location.href={url('/admin/tagihan/edit/'.$bill->id_tagihan)}">Edit</button></td>
+                            <td class="text-center">
+                                <form action="{url('/admin/tagihan/delete/'.$bill->id_tagihan)}" method="POST">
+                                    {csrf('/admin/tagihan/delete/'.$bill->id_tagihan)}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger shadow">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

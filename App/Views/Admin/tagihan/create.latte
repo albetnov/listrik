@@ -1,0 +1,49 @@
+{layout '../layout.latte'}
+{block title}Create Bill{/block}
+{block content}
+<div class="container">
+    <div class="card shadow mt-3">
+        <div class="card-header">Create Bill Form</div>
+        <div class="alert alert-danger mt-2 shadow" n:if="flash()->checkFlash('pesan')">{flash()->catchFlash('pesan')}</div>
+        <div class="card-body">
+            <form action="{url('/admin/tagihan/aksi_buat')}" method="POST" id="create">
+                {csrf('/admin/tagihan/aksi_buat')}
+                <div class="mb-2">
+                    <select name="usage" class="form-select">
+                        <option value="">--CHOOSE CUSTOMER--</option>
+                        {$oldusage = old(usage)}
+                        <option n:foreach="$usages as $usage" value="{$usage->id_penggunaan}" {$oldusage==$usage->id_penggunaan ? selected : ''}>{$usage->pelanggan->nama_pelanggan} | S: {$usage->meter_awal} | E: {$usage->meter_akhir}</option>
+                    </select>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="month" name="bulan" class="form-control {checkError(bulan) ? is-invalid : ''}" value="{old(bulan)}" id="bulan" placeholder="Bulan">
+                    <label for="bulan">Bulan & Tahun</label>
+                    <div class="invalid-feedback" n:if="checkError(bulan)">{validateMsg(bulan)}</div>
+                </div>
+                <p>
+                    <button class="btn btn-primary shadow" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Custom Jumlah Meter?
+                    </button>
+                </p>
+                <div class="collapse mb-2" id="collapseExample">
+                    <div class="alert alert-warning shadow"><b>Belut</b> bisa secara otomatis mengenerate jumlah meter dari hasil data Usage.</div>
+                    <div class="form-floating shadow mb-3">
+                        <input type="number" name="jumlah_meter" class="form-control {checkError(jumlah_meter) ? is-invalid : ''}" value="{old(jumlah_meter)}" id="jumlah_meter" placeholder="Jumlah Meter">
+                        <label for="jumlah_meter">Jumlah Meter</label>
+                        <div class="invalid-feedback" n:if="checkError(jumlah_meter)">{validateMsg(jumlah_meter)}</div>
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" name="status" class="form-control {checkError(status) ? is-invalid : ''}" value="{old(status)}" id="status" placeholder="Status">
+                    <label for="status">Status</label>
+                    <div class="invalid-feedback" n:if="checkError(status)">{validateMsg(status)}</div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-sm btn-primary" type="submit" form="create">Kirim</button>
+            <button class="btn btn-sm btn-secondary" onclick="location.href={url('/admin/tagihan')}">Kembali</button>
+        </div>
+    </div>
+</div>
+{/block}
