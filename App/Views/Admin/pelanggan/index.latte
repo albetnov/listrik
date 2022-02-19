@@ -1,0 +1,50 @@
+{layout '../layout.latte'}
+{block title}Manage Customers{/block}
+{block content}
+<div class="container">
+    <div class="card shadow mt-3">
+        <div class="card-header">
+            Customers List
+            <br>
+            <button class="btn btn-primary mt-1 shadow" onclick="location.href={url('/admin/pelanggan/buat')}">Create Data</button>
+            <div class="alert alert-primary mt-1 shadow" n:if="flash()->checkFlash('pesan')">{flash()->catchFlash('pesan')}</div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Pelanggan</th>
+                            <th>Username</th>
+                            <th>No Kwh</th>
+                            <th>Alamat</th>
+                            <th>Daya</th>
+                            <th>Tarif Per/Kwh</th>
+                            <th colspan="2" class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody n:inner-foreach="$customers as $customer">
+                        <tr>
+                            <td>{!isset($i) ? $i = 1 : ++$i}</td>
+                            <td>{$customer->nama_pelanggan}</td>
+                            <td>{$customer->username}</td>
+                            <td>{$customer->no_kwh}</td>
+                            <td>{$customer->alamat}</td>
+                            <td>{$customer->tarif->daya}</td>
+                            <td>Rp. {$customer->tarif->tarifperkwh}</td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-primary shadow" onclick="location.href={url('/admin/pelanggan/edit/'.$customer->id_pelanggan)}">Edit</button></td>
+                            <td class="text-center">
+                                <form action="{url('/admin/pelanggan/delete/'.$customer->id_pelanggan)}" method="POST">
+                                    {csrf('/admin/pelanggan/delete/'.$customer->id_pelanggan)}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger shadow">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

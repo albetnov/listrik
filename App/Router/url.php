@@ -1,9 +1,7 @@
 <?php
 
-use Albet\Asmvc\Controllers\AdminController;
 use Albet\Asmvc\Controllers\AuthController;
 use Albet\Asmvc\Core\Route;
-use Albet\Asmvc\Middleware\Admin;
 use Albet\Asmvc\Middleware\Guest;
 
 /**
@@ -26,11 +24,5 @@ Route::add('/', [AuthController::class, 'login'], Guest::class);
 Route::add('/login', [AuthController::class, 'auth'], 'POST', Guest::class);
 Route::add('/register', [AuthController::class, 'vDaftar'], Guest::class);
 Route::add('/daftar', [AuthController::class, 'daftar'], 'POST', Guest::class);
-Route::add('/admin/dashboard', [AdminController::class, 'index'], Admin::class);
-Route::add('/admin/akun', [AdminController::class, 'akun'], Admin::class);
-Route::add('/admin/akun/buat', [AdminController::class, 'vBuatAkun'], Admin::class);
-Route::add('/admin/akun/aksi_buat', [AdminController::class, 'buatAkun'], 'POST', Admin::class);
-Route::add("/admin/akun/edit/" . Route::PARAMETER, [AdminController::class, 'vEditAkun'], Admin::class);
-Route::add('/admin/akun/aksi_edit/' . Route::PARAMETER, [AdminController::class, 'editAkun'], 'POST', Admin::class);
-Route::add('/admin/akun/delete/' . Route::PARAMETER, [AdminController::class, 'delAkun'], 'POST', Admin::class);
 Route::add('/logout', [AuthController::class, 'logout'], 'POST');
+require_once __DIR__ . '/admin.php';

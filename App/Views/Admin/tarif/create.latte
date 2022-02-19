@@ -1,0 +1,32 @@
+{layout '../layout.latte'}
+{block title}Create Price{/block}
+{block content}
+<div class="container">
+    <div class="card shadow mt-3">
+        <div class="card-header">Create Price Form</div>
+        <div class="card-body">
+            <form action="{url('/admin/tarif/aksi_buat')}" method="POST" id="create">
+                {csrf('/admin/tarif/aksi_buat')}
+                <div class="form-floating mb-3">
+                    <input type="number" name="daya" class="form-control {checkError(daya) ? is-invalid : ''}" value="{old(daya)}" id="daya" placeholder="daya">
+                    <label for="daya">Daya</label>
+                    {if checkError(daya)}
+                    <div class="invalid-feedback">{validateMsg(daya)}</div>
+                    {/if}
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" name="tarifperkwh" class="form-control {checkError(tarifperkwh) ? is-invalid : ''}" value="{old(tarifperkwh)}" id="tarifperkwh" placeholder="Name">
+                    <label for="tarifperkwh">Harga PerKwh</label>
+                    {if checkError(tarifperkwh)}
+                    <div class="invalid-feedback">{validateMsg(tarifperkwh)}</div>
+                    {/if}
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-sm btn-primary" type="submit" form="create">Kirim</button>
+            <button class="btn btn-sm btn-secondary" onclick="location.href={url('/admin/tarif')}">Kembali</button>
+        </div>
+    </div>
+</div>
+{/block}

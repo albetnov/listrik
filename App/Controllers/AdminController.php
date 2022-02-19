@@ -7,6 +7,8 @@ use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\Validator;
 use Albet\Asmvc\Models\Admin;
 use Albet\Asmvc\Models\Level;
+use Albet\Asmvc\Models\Pelanggan;
+use Albet\Asmvc\Models\Tarif;
 
 class AdminController
 {
@@ -148,5 +150,194 @@ class AdminController
         Flash::flash('pesan', 'Account deleted successfully!');
 
         return redirect('/admin/akun', false);
+    }
+
+    public function pelanggan()
+    {
+        $customers = Pelanggan::with('tarif')->get();
+        return view('Admin.pelanggan.index', compact('customers'));
+    }
+
+    public function vAddPelanggan()
+    {
+        $tarifs = Tarif::get();
+        return view('Admin.pelanggan.create', compact('tarifs'));
+    }
+
+    public function addPelanggan(Requests $requests)
+    {
+        $validate = Validator::make([
+            'username' => 'required',
+            'nama' => 'required',
+            'alamat' => 'required',
+            'password' => 'required|min:8',
+            'conpass' => 'required|same:password',
+            'tarif' => 'required',
+            'no_kwh' => 'required|numeric'
+        ]);
+
+        if (!$validate) {
+            return redirect('/admin/pelanggan/buat', false);
+        }
+
+        Pelanggan::create([
+            'username' => $requests->input('username'),
+            'nama_pelanggan' => $requests->input('nama'),
+            'alamat' => $requests->input('alamat'),
+            'password' => mkPass(PASSWORD_BCRYPT, $requests->input('password')),
+            'id_tarif' => $requests->input('tarif'),
+            'no_kwh' => $requests->input('no_kwh')
+        ]);
+
+        Flash::flash('pesan', 'Customers added');
+        return redirect('/admin/pelanggan', false);
+    }
+
+    public function vEditPelanggan($id)
+    {
+        $fetch = Pelanggan::with('tarif')->where('id_pelanggan', $id)->first();
+
+        if (!$fetch) {
+            return ReturnError(404);
+        }
+
+        return view('Admin.pelanggan.edit', [
+            'customer' => $fetch,
+            'tarifs' => Tarif::get()
+        ]);
+    }
+
+    public function editPelanggan(Requests $requests, $id)
+    {
+        $fetch = Pelanggan::where('id_pelanggan', $id)->first();
+
+        if (!$fetch) {
+            return ReturnError(404);
+        }
+        $data = [
+            'username' => $requests->input('username'),
+            'nama_pelanggan' => $requests->input('nama'),
+            'alamat' => $requests->input('alamat'),
+            'id_tarif' => $requests->input('tarif'),
+            'no_kwh' => $requests->input('no_kwh')
+        ];
+        $rules = [
+            'username' => 'required',
+            'nama' => 'required',
+            'alamat' => 'required',
+            'tarif' => 'required',
+            'no_kwh' => 'required|numeric'
+        ];
+        if ($requests->input('password')) {
+            $rules[] = [
+                'password' => 'required|min:8',
+                'conpass' => 'required|same:password'
+            ];
+            $data[] = [
+                'password' => mkPass(PASSWORD_BCRYPT, $requests->input('password'))
+            ];
+        }
+        $validate = Validator::make($rules);
+        $fetch->update($data);
+
+        if (!$validate) {
+            return redirect('/admin/pelanggan/edit/' . $id, false);
+        }
+
+        Flash::flash('pesan', 'Customer updated.');
+        return redirect('/admin/pelanggan', false);
+    }
+
+    public function delPelanggan($id)
+    {
+        $fetch = Pelanggan::where('id_pelanggan', $id)->first();
+
+        if (!$fetch) {
+            return ReturnError(404);
+        }
+
+        $fetch->delete();
+
+        Flash::flash('pesan', 'Customer deleted.');
+        return redirect('/admin/pelanggan', false);
+    }
+
+    public function tarif()
+    {
+        $tarifs = Tarif::get();
+        return view('Admin.tarif.index', compact('tarifs'));
+    }
+
+    public function vAddTarif()
+    {
+        return view('Admin.tarif.create');
+    }
+
+    public function addTarif(Requests $requests)
+    {
+        $validate = Validator::make([
+            'daya' => 'required|numeric',
+            'tarifperkwh' => 'required|numeric'
+        ]);
+
+        if (!$validate) {
+            return redirect('/admin/tarif/buat', false);
+        }
+
+        Tarif::create([
+            'daya' => $requests->input('daya'),
+            'tarifperkwh' => $requests->input('tarifperkwh')
+        ]);
+
+        Flash::flash('pesan', 'Price added.');
+
+        return redirect('/admin/tarif', false);
+    }
+
+    public function vEditTarif($id)
+    {
+        $fetch = Tarif::where('id_tarif', $id)->first();
+
+        if (!$fetch) return ReturnError(404);
+
+        return view('/admin/tarif/edit', ['tarif' => $fetch]);
+    }
+
+    public function editTarif(Requests $requests, $id)
+    {
+        $fetch = Tarif::where('id_tarif', $id)->first();
+
+        if (!$fetch) return ReturnError(404);
+
+        $validate = Validator::make([
+            'daya' => 'required|numeric',
+            'tarifperkwh' => 'required|numeric'
+        ]);
+
+        if (!$validate) {
+            return redirect('/admin/tarif/edit/' . $id, false);
+        }
+
+        $fetch->update([
+            'daya' => $requests->input('daya'),
+            'tarifperkwh' => $requests->input('tarifperkwh')
+        ]);
+
+        Flash::flash('pesan', 'Price edited.');
+
+        return redirect('/admin/tarif', false);
+    }
+
+    public function delTarif($id)
+    {
+        $fetch = Tarif::where('id_tarif', $id)->first();
+
+        if (!$fetch) return ReturnError(404);
+
+        $fetch->delete();
+
+        Flash::flash('pesan', 'Price deleted.');
+
+        return redirect('/admin/tarif', false);
     }
 }

@@ -1,0 +1,42 @@
+{layout '../layout.latte'}
+{block title}Manage Prices{/block}
+{block content}
+<div class="container">
+    <div class="card shadow mt-3">
+        <div class="card-header">
+            Prices List
+            <br>
+            <button class="btn btn-primary mt-1 shadow" onclick="location.href={url('/admin/tarif/buat')}">Create Data</button>
+            <div class="alert alert-primary mt-1 shadow" n:if="flash()->checkFlash('pesan')">{flash()->catchFlash('pesan')}</div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Daya</th>
+                            <th>Tarif Per/Kwh</th>
+                            <th colspan="2" class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody n:inner-foreach="$tarifs as $tarif">
+                        <tr>
+                            <td>{!isset($i) ? $i = 1 : ++$i}</td>
+                            <td>{$tarif->daya}</td>
+                            <td>Rp. {$tarif->tarifperkwh}</td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-primary shadow" onclick="location.href={url('/admin/tarif/edit/'.$tarif->id_tarif)}">Edit</button></td>
+                            <td class="text-center">
+                                <form action="{url('/admin/tarif/delete/'.$tarif->id_tarif)}" method="POST">
+                                    {csrf('/admin/tarif/delete/'.$tarif->id_tarif)}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger shadow">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
