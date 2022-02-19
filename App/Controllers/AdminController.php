@@ -8,6 +8,7 @@ use Albet\Asmvc\Core\Validator;
 use Albet\Asmvc\Models\Admin;
 use Albet\Asmvc\Models\Level;
 use Albet\Asmvc\Models\Pelanggan;
+use Albet\Asmvc\Models\Pengunaan;
 use Albet\Asmvc\Models\Tarif;
 
 class AdminController
@@ -339,5 +340,107 @@ class AdminController
         Flash::flash('pesan', 'Price deleted.');
 
         return redirect('/admin/tarif', false);
+    }
+
+    public function pengunaan()
+    {
+        $usages = Pengunaan::with('pelanggan')->get();
+
+        return view('Admin.pengunaan.index', compact('usages'));
+    }
+
+    public function vAddPengunaan()
+    {
+        $customers = Pelanggan::get();
+
+        return view('Admin.pengunaan.create', compact('customers'));
+    }
+
+    public function addPengunaan(Requests $requests)
+    {
+        $validate = Validator::make([
+            'pelanggan' => 'required',
+            'bulan' => 'required',
+            'meter_awal' => 'required|numeric',
+            'meter_akhir' => 'required|numeric',
+        ]);
+
+        if (!$validate || $requests->input('pelanggan') == '') {
+            Flash::flash('pesan', 'Customer invalid.');
+            return redirect('/admin/pengunaan/buat', false);
+        }
+
+        $split = explode('-', $requests->input('bulan'));
+
+
+        Pengunaan::create([
+            'id_pelanggan' => $requests->input('pelanggan'),
+            'tahun' => $split[0],
+            'bulan' => $split[1],
+            'meter_awal' => $requests->input('meter_awal'),
+            'meter_akhir' => $requests->input('meter_akhir')
+        ]);
+
+        Flash::flash('pesan', 'Usage added.');
+        return redirect('/admin/pengunaan', false);
+    }
+
+    public function vEditPengunaan($id)
+    {
+        $fetch = Pengunaan::with('pelanggan')->where('id_penggunaan', $id)->first();
+
+        if (!$fetch) return ReturnError(404);
+
+        $array = [$fetch->tahun, $fetch->bulan];
+        $combined = implode('-', $array);
+
+        return view('Admin.pengunaan.edit', [
+            'usage' => $fetch,
+            'date' => $combined,
+            'customers' => Pelanggan::get()
+        ]);
+    }
+
+    public function editPengunaan(Requests $requests, $id)
+    {
+        $fetch = Pengunaan::with('pelanggan')->where('id_penggunaan', $id)->first();
+
+        if (!$fetch) return ReturnError(404);
+
+        $validate = Validator::make([
+            'pelanggan' => 'required',
+            'bulan' => 'required',
+            'meter_awal' => 'required|numeric',
+            'meter_akhir' => 'required|numeric',
+        ]);
+
+        if (!$validate) {
+            return redirect('/admin/pengunaan/edit/' . $id, false);
+        }
+
+        $split = explode('-', $requests->input('bulan'));
+
+        $fetch->update([
+            'id_pelanggan' => $requests->input('pelanggan'),
+            'tahun' => $split[0],
+            'bulan' => $split[1],
+            'meter_awal' => $requests->input('meter_awal'),
+            'meter_akhir' => $requests->input('meter_akhir')
+        ]);
+
+        Flash::flash('pesan', 'Usage edited.');
+        return redirect('/admin/pengunaan', false);
+    }
+
+    public function delPengunaan($id)
+    {
+        $fetch = Pengunaan::with('pelanggan')->where('id_penggunaan', $id)->first();
+
+        if (!$fetch) return ReturnError(404);
+
+        $fetch->delete();
+
+        Flash::flash('pesan', 'Usage deleted.');
+        return redirect('/admin/pengunaan', false);
     }
 }

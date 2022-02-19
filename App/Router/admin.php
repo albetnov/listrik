@@ -23,3 +23,9 @@ Route::add('/admin/tarif/aksi_buat', [AdminController::class, 'addTarif'], 'POST
 Route::add('/admin/tarif/edit/' . Route::PARAMETER, [AdminController::class, 'vEditTarif'], Admin::class);
 Route::add('/admin/tarif/aksi_edit/' . Route::PARAMETER, [AdminController::class, 'editTarif'], 'POST', Admin::class);
 Route::add('/admin/tarif/delete/' . Route::PARAMETER, [AdminController::class, 'delTarif'], 'POST', Admin::class);
+Route::add('/admin/pengunaan', [AdminController::class, 'pengunaan'], Admin::class);
+Route::add('/admin/pengunaan/buat', [AdminController::class, 'vAddPengunaan'], Admin::class);
+Route::add('/admin/pengunaan/aksi_buat', [AdminController::class, 'addPengunaan'], 'POST', Admin::class);
+Route::add('/admin/pengunaan/edit/' . Route::PARAMETER, [AdminController::class, 'vEditPengunaan'], Admin::class);
+Route::add('/admin/pengunaan/aksi_edit/' . Route::PARAMETER, [AdminController::class, 'editPengunaan'], 'POST', Admin::class);
+Route::add('/admin/pengunaan/delete/' . Route::PARAMETER, [AdminController::class, 'delPengunaan'], 'POST', Admin::class);

@@ -1,0 +1,41 @@
+{layout '../layout.latte'}
+{block title}Create Usage{/block}
+{block content}
+<div class="container">
+    <div class="card shadow mt-3">
+        <div class="card-header">Create Usage Form</div>
+        <div class="alert alert-danger mt-2 shadow" n:if="flash()->checkFlash('pesan')">{flash()->catchFlash('pesan')}</div>
+        <div class="card-body">
+            <form action="{url('/admin/pengunaan/aksi_buat')}" method="POST" id="create">
+                {csrf('/admin/pengunaan/aksi_buat')}
+                <div class="mb-2">
+                    <select name="pelanggan" class="form-select">
+                        <option value="">--CHOOSE CUSTOMER--</option>
+                        {$oldpelanggan = old(pelanggan)}
+                        <option n:foreach="$customers as $customer" value="{$customer->id_pelanggan}" {$oldpelanggan==$customer->id_pelanggan ? selected : ''}>{$customer->nama_pelanggan}</option>
+                    </select>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="month" name="bulan" class="form-control {checkError(bulan) ? is-invalid : ''}" value="{old(bulan)}" id="bulan" placeholder="Bulan">
+                    <label for="bulan">Bulan & Tahun</label>
+                    <div class="invalid-feedback" n:if="checkError(bulan)">{validateMsg(bulan)}</div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" name="meter_awal" class="form-control {checkError(meter_awal) ? is-invalid : ''}" value="{old(meter_awal)}" id="meter_awal" placeholder="Meter Awal">
+                    <label for="meter_awal">Meter Awal</label>
+                    <div class="invalid-feedback" n:if="checkError(meter_awal)">{validateMsg(meter_awal)}</div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" name="meter_akhir" class="form-control {checkError(meter_akhir) ? is-invalid : ''}" value="{old(meter_akhir)}" id="meter_akhir" placeholder="Meter Akhir">
+                    <label for="meter_akhir">Meter Akhir</label>
+                    <div class="invalid-feedback" n:if="checkError(meter_akhir)">{validateMsg(meter_akhir)}</div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-sm btn-primary" type="submit" form="create">Kirim</button>
+            <button class="btn btn-sm btn-secondary" onclick="location.href={url('/admin/pengunaan')}">Kembali</button>
+        </div>
+    </div>
+</div>
+{/block}

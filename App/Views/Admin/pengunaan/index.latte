@@ -1,0 +1,48 @@
+{layout '../layout.latte'}
+{block title}Manage Usages{/block}
+{block content}
+<div class="container">
+    <div class="card shadow mt-3">
+        <div class="card-header">
+            Usages List
+            <br>
+            <button class="btn btn-primary mt-1 shadow" onclick="location.href={url('/admin/pengunaan/buat')}">Create Data</button>
+            <div class="alert alert-primary mt-1 shadow" n:if="flash()->checkFlash('pesan')">{flash()->catchFlash('pesan')}</div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Pelanggan</th>
+                            <th>Bulan</th>
+                            <th>Tahun</th>
+                            <th>Meteran Awal</th>
+                            <th>Meteran Akhir</th>
+                            <th colspan="2" class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody n:inner-foreach="$usages as $usage">
+                        <tr>
+                            <td>{!isset($i) ? $i = 1 : ++$i}</td>
+                            <td>{$usage->pelanggan->nama_pelanggan}</td>
+                            <td>{$usage->bulan}</td>
+                            <td>{$usage->tahun}</td>
+                            <td>{$usage->meter_awal}</td>
+                            <td>{$usage->meter_akhir}</td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-primary shadow" onclick="location.href={url('/admin/pengunaan/edit/'.$usage->id_penggunaan)}">Edit</button></td>
+                            <td class="text-center">
+                                <form action="{url('/admin/pengunaan/delete/'.$usage->id_penggunaan)}" method="POST">
+                                    {csrf('/admin/pengunaan/delete/'.$usage->id_penggunaan)}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger shadow">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
