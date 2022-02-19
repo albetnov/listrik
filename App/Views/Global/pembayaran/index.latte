@@ -1,0 +1,51 @@
+{layout '../layout.latte'}
+{block title}Manage Payments{/block}
+{block content}
+<div class="container">
+    <div class="card shadow mt-3">
+        <div class="card-header">
+            Payments List
+            <br>
+            <button class="btn btn-primary mt-1 shadow" onclick="location.href={url('/admin/pembayaran/buat')}">Create Data</button>
+            <div class="alert alert-primary mt-1 shadow" n:if="flash()->checkFlash('pesan')">{flash()->catchFlash('pesan')}</div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Pelanggan</th>
+                            <th>Tanggal Pembayaran</th>
+                            <th>Bulan Bayar</th>
+                            <th>Biaya Admin</th>
+                            <th>Total Bayar</th>
+                            <th>Nama Admin</th>
+                            <th colspan="3" class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody n:inner-foreach="$payments as $payment">
+                        <tr>
+                            <td>{!isset($i) ? $i = 1 : ++$i}</td>
+                            <td>{$payment->pelanggan->nama_pelanggan}</td>
+                            <td>{$payment->tanggal_pembayaran}</td>
+                            <td>{$payment->bulan_bayar}</td>
+                            <td>{$payment->biaya_admin}</td>
+                            <td>{$payment->total_bayar}</td>
+                            <td>{$payment->admin->nama_admin}</td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-info shadow" onclick="location.href={url($url.'/pembayaran/see/'.$payment->id_pembayaran)}">Detail</button></td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-primary shadow" onclick="location.href={url($url.'/pembayaran/edit/'.$payment->id_pembayaran)}">Edit</button></td>
+                            <td class="text-center">
+                                <form action="{url($url.'/pembayaran/delete/'.$payment->id_pembayaran)}" method="POST">
+                                    {csrf($url.'/pembayaran/delete/'.$payment->id_pembayaran)}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger shadow">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

@@ -447,14 +447,14 @@ class AdminController
 
     public function tagihan()
     {
-        $bills = Tagihan::with('pelanggan', 'penggunaan')->get();
+        $bills = Tagihan::with(['pelanggan', 'penggunaan'])->get();
 
         return view('Admin.tagihan.index', compact('bills'));
     }
 
     public function seeTagihan($id)
     {
-        $bill = Tagihan::with('pelanggan', 'penggunaan')->where('id_tagihan', $id)->first();
+        $bill = Tagihan::with(['pelanggan', 'penggunaan'])->where('id_tagihan', $id)->first();
         if (!$bill) return ReturnError(404);
 
         return view('Admin.tagihan.detail', compact('bill'));
@@ -511,7 +511,7 @@ class AdminController
 
     public function vEditTagihan($id)
     {
-        $bill = Tagihan::with('pelanggan', 'penggunaan')->where('id_tagihan', $id)->first();
+        $bill = Tagihan::with(['pelanggan', 'penggunaan'])->where('id_tagihan', $id)->first();
         if (!$bill) return ReturnError(404);
 
         $usages = Pengunaan::get();
@@ -522,7 +522,7 @@ class AdminController
 
     public function editTagihan(Requests $requests, $id)
     {
-        $bill = Tagihan::with('pelanggan', 'penggunaan')->where('id_tagihan', $id)->first();
+        $bill = Tagihan::with(['pelanggan', 'penggunaan'])->where('id_tagihan', $id)->first();
         if (!$bill) return ReturnError(404);
 
         $validate = Validator::make([
@@ -557,7 +557,7 @@ class AdminController
 
     public function delTagihan($id)
     {
-        $bill = Tagihan::with('pelanggan', 'penggunaan')->where('id_tagihan', $id)->first();
+        $bill = Tagihan::with(['pelanggan', 'penggunaan'])->where('id_tagihan', $id)->first();
         if (!$bill) return ReturnError(404);
 
         $bill->delete();

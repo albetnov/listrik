@@ -1,0 +1,20 @@
+{layout '../layout.latte'}
+{block title}Detail Bills{/block}
+{block content}
+<div class="container mt-3">
+    <div class="card shadow">
+        <div class="card-header">
+            Detail {$bill->pelanggan->nama_pelanggan}
+        </div>
+        <div class="card-body">
+            <p>Bulan: {$bill->bulan}</p>
+            <p>Tahun: {$bill->tahun}</p>
+            <p>Jumlah Meter: {$bill->jumlah_meter}</p>
+            <p>Status: <span class="badge rounded-pill bg-info">{$bill->status}</span></p>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-sm btn-primary" onclick="location.href={url($url.'/pembayaran')}">Back</button>
+        </div>
+    </div>
+</div>
+{/block}

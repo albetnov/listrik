@@ -1,0 +1,55 @@
+{layout '../layout.latte'}
+{block title}Edit Payment{/block}
+{block content}
+<div class="container">
+    <div class="card shadow mt-3">
+        <div class="card-header">Edit Payment Form</div>
+        <div class="alert alert-danger mt-2 shadow" n:if="flash()->checkFlash('pesan')">{flash()->catchFlash('pesan')}</div>
+        <div class="card-body">
+            <form action="{url($url.'/pembayaran/aksi_edit/'. $pembayaran->id_pembayaran)}" method="POST" id="edit">
+                {csrf($url.'/pembayaran/aksi_edit/'. $pembayaran->id_pembayaran)}
+                <div class="mb-2">
+                    <select name="tagihan" class="form-select">
+                        <option value="">--CHOOSE CUSTOMER--</option>
+                        {$oldtagihan = old(tagihan, $pembayaran->tagihan->id_tagihan)}
+                        <option n:foreach="$bills as $bill" value="{$bill->id_tagihan}" {$oldtagihan==$bill->id_tagihan ? selected : ''}>{$bill->pelanggan->nama_pelanggan} | T: {$bill->jumlah_meter} | D: {$bill->bulan} - {$bill->tahun}</option>
+                    </select>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="date" name="tanggal_pembayaran" class="form-control {checkError(tanggal_pembayaran) ? is-invalid : ''}" value="{old(tanggal_pembayaran, $date)}" id="tanggal_pembayaran" placeholder="Tanggal Pembayaran">
+                    <label for="tanggal_pembayaran">Tanggal Pembayaran</label>
+                    <div class="invalid-feedback" n:if="checkError(tanggal_pembayaran)">{validateMsg(tanggal_pembayaran)}</div>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="month" name="bulan" class="form-control {checkError(bulan) ? is-invalid : ''}" value="{old(bulan, date(Y).'-'.$pembayaran->bulan_bayar)}" id="bulan" placeholder="Bulan">
+                    <label for="bulan">Bulan</label>
+                    <div class="invalid-feedback" n:if="checkError(bulan)">{validateMsg(bulan)}</div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" name="total_bayar" class="form-control {checkError(total_bayar) ? is-invalid : ''}" value="{old(total_bayar, $pembayaran->total_bayar)}" id="total_bayar" placeholder="Bayar">
+                    <label for="total_bayar">Bayar</label>
+                    <div class="invalid-feedback" n:if="checkError(total_bayar)">{validateMsg(total_bayar)}</div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" name="biaya_admin" class="form-control {checkError(biaya_admin) ? is-invalid : ''}" value="{old(biaya_admin, $pembayaran->biaya_admin)}" id="biaya_admin" placeholder="Biaya Admin">
+                    <label for="biaya_admin">Biaya Admin</label>
+                    <div class="invalid-feedback" n:if="checkError(biaya_admin)">{validateMsg(biaya_admin)}</div>
+                </div>
+                <div class="mb-2">
+                    <select name="admin" class="form-select">
+                        <option value="">--ASSIGN TO--</option>
+                        {$oldadmin = old(admin, $pembayaran->admin->id_admin)}
+                        <option n:foreach="$admins as $admin" value="{$admin->id_admin}" {$oldadmin==$admin->id_admin ? selected : ''}>{$admin->nama_admin}</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-sm btn-primary" type="submit" form="edit">Kirim</button>
+            <button class="btn btn-sm btn-secondary" onclick="location.href={url($url.'/pembayaran')}">Kembali</button>
+        </div>
+    </div>
+</div>
+{/block}

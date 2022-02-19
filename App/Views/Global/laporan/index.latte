@@ -1,0 +1,139 @@
+{layout '../layout.latte'}
+{block title}Laporan Belut{/block}
+{block content}
+<div class="container">
+    <div class="card mt-3 shadow">
+        <div class="card-header">
+            Laporan
+        </div>
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <div class="d-flex mt-2 justify-content-center align-items center">
+                                        <div class="text-primary fa-solid fa-users fa-7x"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Jumlah User</h5>
+                                        <p class="card-text">{$user}</p>
+                                        <p class="card-text"><small class="text-muted">Just updated.</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <div class="d-flex mt-2 justify-content-center align-items center">
+                                        <div class="text-secondary fa-solid fa-person fa-7x"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Jumlah Customer</h5>
+                                        <p class="card-text">{$customer}</p>
+                                        <p class="card-text"><small class="text-muted">Just updated.</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <div class="d-flex mt-2 justify-content-center align-items center">
+                                        <div class="text-success fa-solid fa-money-bill fa-7x"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Jumlah Varian Tarif</h5>
+                                        <p class="card-text">{$price}</p>
+                                        <p class="card-text"><small class="text-muted">Just updated.</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <div class="d-flex mt-2 justify-content-center align-items center">
+                                        <div class="text-info fa-solid fa-chart-column fa-7x"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Jumlah Pemakaian</h5>
+                                        <p class="card-text">{$usage}</p>
+                                        <p class="card-text"><small class="text-muted">Just updated.</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <div class="d-flex mt-2 justify-content-center align-items center">
+                                        <div class="text-warning fa-solid fa-file-invoice-dollar fa-7x"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Jumlah Tagihan</h5>
+                                        <p class="card-text">{$bill}</p>
+                                        <p class="card-text"><small class="text-muted">Just updated.</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <div class="d-flex mt-2 justify-content-center align-items center">
+                                        <div class="text-danger fa-solid fa-cash-register fa-7x"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Jumlah Pembayaran</h5>
+                                        <p class="card-text">{$payment}</p>
+                                        <p class="card-text"><small class="text-muted">Just updated.</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
