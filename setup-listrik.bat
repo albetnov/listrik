@@ -1,5 +1,6 @@
 @echo off
 echo Starting Setup
+composer install
 php asmvc setup
 echo Setup done
 echo Starting Migration...
