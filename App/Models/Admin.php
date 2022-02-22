@@ -10,6 +10,7 @@ class Admin extends BaseEloquent
     public $timestamps = false;
     protected $primaryKey = 'id_admin';
     protected $fillable = ['nama_admin', 'username', 'password', 'id_level'];
+    private static $cache;
 
     public function level()
     {
@@ -21,6 +22,16 @@ class Admin extends BaseEloquent
         if (!isset($_SESSION['logged'])) {
             throw new \Exception("Anda belum login bujang");
         }
-        return self::with('level')->where('id_admin', $_SESSION['id'])->first();
+        if (isset($_SESSION['type'])) {
+            $result = Pelanggan::where('id_pelanggan', $_SESSION['id'])->first();
+        } else {
+            $result = self::with('level')->where('id_admin', $_SESSION['id'])->first();
+        }
+        self::$cache = $result;
+        if (!self::$cache) {
+            return $result;
+        } else {
+            return self::$cache;
+        }
     }
 }

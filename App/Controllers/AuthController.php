@@ -7,6 +7,7 @@ use Albet\Asmvc\Core\Requests;
 use Albet\Asmvc\Core\SessionManager;
 use Albet\Asmvc\Core\Validator;
 use Albet\Asmvc\Models\Admin;
+use Albet\Asmvc\Models\Pelanggan;
 
 class AuthController
 {
@@ -29,6 +30,7 @@ class AuthController
         }
 
         $find = Admin::with('level')->where('username', request()->input('username'))->first();
+        $findUser = Pelanggan::where('username', request()->input('username'))->first();
         if ($find) {
             if (!passCompare(request()->input('password'), $find->password)) {
                 Flash::flash('error', 'Kresidensial tidak cocok');
@@ -38,8 +40,22 @@ class AuthController
                 $_SESSION['logged'] = true;
                 $_SESSION['id'] = $find->id_admin;
                 return redirect('/admin/dashboard');
+            } else {
+                $_SESSION['logged'] = true;
+                $_SESSION['id'] = $find->id_admin;
+                return redirect('/bank/dashboard');
             }
+        } else if ($findUser) {
+            if (!passCompare(request()->input('password'), $findUser->password)) {
+                Flash::flash('error', 'Kresidensial tidak cocok');
+                return redirect('/');
+            }
+            $_SESSION['logged'] = true;
+            $_SESSION['type'] = 'pelanggan';
+            $_SESSION['id'] = $findUser->id_pelanggan;
+            return redirect('/pelanggan/dashboard');
         } else {
+
             Flash::flash('error', 'Kresidensial tidak cocok');
             return redirect('/');
         }
@@ -83,14 +99,23 @@ class AuthController
 
     public static function redirect()
     {
-        if (isset($_SESSION['level']) && Admin::user()->level->nama_level == 'admin') {
-            return redirect('/admin/dashboard');
+        if (isset($_SESSION['logged'])) {
+            $level = Admin::user()->level->nama_level ?? null;
+            if (!isset($level)) {
+                return redirect('/pelanggan/dashboard', false);
+            }
+            if ($level == 'admin') {
+                return redirect('/admin/dashboard', false);
+            } else {
+                return redirect('/bank/dashboard', false);
+            }
         }
     }
 
     public function logout()
     {
         unset($_SESSION['id']);
+        if (isset($_SESSION['type'])) unset($_SESSION['type']);
         unset($_SESSION['logged']);
         SessionManager::generateSession(true);
         return redirect('/', false);

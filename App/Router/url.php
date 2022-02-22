@@ -26,3 +26,5 @@ Route::add('/register', [AuthController::class, 'vDaftar'], Guest::class);
 Route::add('/daftar', [AuthController::class, 'daftar'], 'POST', Guest::class);
 Route::add('/logout', [AuthController::class, 'logout'], 'POST');
 require_once __DIR__ . '/admin.php';
+require_once __DIR__ . '/pelanggan.php';
+require_once __DIR__ . '/bank.php';

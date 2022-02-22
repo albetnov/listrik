@@ -6,7 +6,7 @@
         <div class="card-header">
             Payments List
             <br>
-            <button class="btn btn-primary mt-1 shadow" onclick="location.href={url('/admin/pembayaran/buat')}">Create Data</button>
+            <button class="btn btn-primary mt-1 shadow" onclick="location.href={url($url.'/pembayaran/buat')}">Create Data</button>
             <div class="alert alert-primary mt-1 shadow" n:if="flash()->checkFlash('pesan')">{flash()->catchFlash('pesan')}</div>
         </div>
         <div class="card-body">

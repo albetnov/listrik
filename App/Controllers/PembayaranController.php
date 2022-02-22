@@ -16,7 +16,11 @@ class PembayaranController
 
     public function __construct()
     {
-        $this->url = Admin::user()->level->nama_level == 'admin' ? '/admin' : '/user';
+        if (isset(Admin::user()->level->nama_level) && Admin::user()->level->nama_level == 'admin') {
+            $this->url = '/admin';
+        } else {
+            $this->url = '/pelanggan';
+        }
     }
 
     public function index()
