@@ -1,7 +1,4 @@
 @echo off
-echo Starting Setup
-php asmvc setup
-echo Setup done
 echo Starting Migration...
 echo Listrik by Albet Novendo.
 php asmvc run:migration Level

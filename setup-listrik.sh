@@ -2,10 +2,7 @@
 # Setup for Unix Based operating system
 echo "Setting up Listrik..."
 echo "Starting Setup"
-$(which composer) install
 php=$(which php)
-$php asmvc setup
-echo "Setup done"
 echo "Starting Migration..."
 echo "Listrik by Albet Novendo."
 $php asmvc run:migration Level
